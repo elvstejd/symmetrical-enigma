@@ -1,18 +1,20 @@
 const gameBoard = (function() {
-    const _gameBoard = [
-        [],
-        [],
-        []
-    ];
+    let  _gameBoard = Array(9);
 
-    const render = () => {
-        
+    const markCell = (index, markType) => {
+        _gameBoard[index] = markType === 1 ? "X" : "O";
+        Controller.render(_gameBoard);
     }
 
-    const markCell = (x, y, value) => {
-        _gameBoard[x][y] = value === 1 ? "X" : "O";
+    const clearBoard = () => {
+        // replace with new array
+        _gameBoard = Array(9);
     }
 
+    return {
+        markCell,
+        clearBoard,
+    }
 })();
 
 const Player = (playerName, playerNumber) => {
@@ -20,3 +22,41 @@ const Player = (playerName, playerNumber) => {
 
     // 
 }
+
+const Controller = ((doc) => {
+    let turn = true;
+    const cells = doc.getElementsByClassName("cell");
+    
+    Array.from(cells).forEach(cell => {
+        cell.addEventListener("click", function() {
+            let mark = turn ? 1 : 0;
+            gameBoard.markCell(Number.parseInt(this.dataset.index), mark);
+            turn = !turn;
+        });
+    });
+
+    const render = (array) => {
+        array.forEach((element, index) => {
+            if (element) {
+                cells[index].textContent = element;
+            }
+        });
+    }
+
+    const rightTurn = () => {
+
+    }
+
+    const leftTurn = () => {
+
+    }
+
+    return {
+        render,
+    }
+
+})(document);
+
+const Game = (() => {
+    console.log("Hello there");
+})();
