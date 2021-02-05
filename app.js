@@ -9,6 +9,7 @@ const gameBoard = (function() {
     const clearBoard = () => {
         // replace with new array
         _gameBoard = Array(9);
+        Controller.resetBoard();
     }
 
     return {
@@ -43,6 +44,12 @@ const Controller = ((doc) => {
         });
     }
 
+    const resetBoard = () => {
+        Array.from(cells).forEach(cell => {
+            cell.textContent = "";
+        });
+    }
+
     const rightTurn = () => {
 
     }
@@ -53,6 +60,7 @@ const Controller = ((doc) => {
 
     return {
         render,
+        resetBoard,
     }
 
 })(document);
