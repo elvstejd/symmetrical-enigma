@@ -2,8 +2,13 @@ const gameBoard = (function() {
     let  _gameBoard = ["","","","","","","","",""];
 
     const markCell = (index, markType) => {
+        if (_gameBoard[index] != "") {
+            return false;
+        }
         _gameBoard[index] = markType === 1 ? "X" : "O";
         Game.render(_gameBoard);
+
+        return true;
     }
 
     const clearBoard = () => {
@@ -45,8 +50,6 @@ const gameBoard = (function() {
         } else if (secondDiagonalWin) {
             Game.winColorizer('sdw');
         }
-        
-
     }
 
     return {
@@ -64,15 +67,24 @@ const Player = (playerName, playerNumber) => {
 
 const Game = ((doc) => {
     let turn = true;
+    let gameIsFinished = false;
     const cells = doc.getElementsByClassName("cell");
-    
-    Array.from(cells).forEach(cell => {
-        cell.addEventListener("click", function() {
-            let mark = turn ? 1 : 0;
-            gameBoard.markCell(Number.parseInt(this.dataset.index), mark);
+    const playAgainBtn = doc.getElementById("play-again");
+
+    const handleCellClick = (e) => {
+        if (gameIsFinished) {
+            return;
+        }
+        let mark = turn ? 1 : 0;
+        const success = gameBoard.markCell(Number.parseInt(e.target.dataset.index), mark);
+        if (success) {
             turn = !turn;
-            gameBoard.checkWin();
-        });
+        }
+        gameBoard.checkWin();
+    }
+
+    Array.from(cells).forEach(cell => {
+        cell.addEventListener("click", handleCellClick);
     });
 
     const render = (array) => {
@@ -90,7 +102,11 @@ const Game = ((doc) => {
     }
 
     const resetGame = () => {
-
+        Array.from(cells).forEach(cell => {
+            cell.classList.remove('win');
+        });
+        gameBoard.clearBoard();
+        gameIsFinished = false;
     }
 
     const winColorizer = (winType) => {
@@ -136,7 +152,10 @@ const Game = ((doc) => {
                 cells[6].classList.add('win');
                 break;
         }
+        gameIsFinished = true;
     }
+
+    playAgainBtn.addEventListener("click", resetGame);
 
     return {
         render,
