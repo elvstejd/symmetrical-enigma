@@ -26,7 +26,13 @@ header {
     display: grid;
     grid-template-columns: 5rem 5rem 5rem;
     grid-template-rows: 5rem 5rem 5rem;
-    
+}
+
+@media only screen and (min-width: 500px) {
+    .board {
+        grid-template-columns: 8rem 8rem 8rem;
+        grid-template-rows: 8rem 8rem 8rem;
+    } 
 }
 
 .panel {
@@ -35,22 +41,23 @@ header {
     position: absolute;
 }
 
-#left-panel {
-    background-color: aquamarine;
-    top: 0;
-    left: 0;
-}
-
-#right-panel {
-    background-color: firebrick;
-    top: 0;
-    right: 0;
-}
-
 .cell {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 2rem;
+    transition: .3s ease;
+}
+
+.cell.win {
+    background-color: green;
+    color: white;
+}
+
+@media only screen and (min-width: 500px) {
+    .cell {
+        font-size: 3rem;
+    } 
 }
 
 .cell:nth-child(1) {
